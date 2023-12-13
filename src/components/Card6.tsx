@@ -9,10 +9,22 @@ type Card6 = {
   time: string;
   image: string;
   id: string;
+  city: string;
+  country: string;
 };
 
-function Card6({ date, title, description, place, time, image, id }: Card6) {
-  let dateobj = new Date(date).toLocaleDateString().split("/");
+function Card6({
+  date,
+  title,
+  description,
+  place,
+  time,
+  image,
+  id,
+  city,
+  country,
+}: Card6) {
+  let dateobj = new Date(date).toLocaleDateString();
   let timeObj = new Date(date).toLocaleTimeString();
   return (
     <div
@@ -31,10 +43,10 @@ function Card6({ date, title, description, place, time, image, id }: Card6) {
         </span>
         <div className="flex flex-col gap-1">
           <span className="flex gap-2 items-center">
-            {/* <p className="flex text-[8px] gap-1">
+            <p className="flex text-[8px] gap-1">
               <Clock />
-              {timeObj}
-            </p> */}
+              {timeObj == "00:00:00" ? "N/A" : timeObj}
+            </p>
             <p className="flex text-[8px] gap-1">
               <Callender />
               {dateobj}
@@ -43,7 +55,7 @@ function Card6({ date, title, description, place, time, image, id }: Card6) {
           <span className="flex gap-2 items-center">
             <p className="flex text-[8px] gap-1">
               <Pin />
-              {limitWords(place || "", 50)}
+              {limitWords(city || country || place || "", 20)}
             </p>
             {/* <p className="flex text-[8px] gap-1">
               <Seats />

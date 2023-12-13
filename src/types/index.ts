@@ -21,6 +21,8 @@ export type EventAll = {
   updatedAt: string;
   __v: number;
   visible: boolean;
+  city: string;
+  country: string;
 };
 
 export type Event = {

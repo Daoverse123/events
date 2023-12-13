@@ -17,9 +17,21 @@ type Card1 = {
   time: string;
   image: string;
   id: string;
+  city: string;
+  country: string;
 };
 
-function Card1({ date, title, description, place, time, image, id }: Card1) {
+function Card1({
+  date,
+  title,
+  description,
+  place,
+  time,
+  image,
+  id,
+  city,
+  country,
+}: Card1) {
   let dateobj = new Date(date).toLocaleDateString().split("/");
   let timeObj = new Date(date).toLocaleTimeString();
 
@@ -36,8 +48,8 @@ function Card1({ date, title, description, place, time, image, id }: Card1) {
       </picture>
       <div className="flex w-full py-[12.8px] px-6 gap-[20px]">
         <span className="flex flex-col items-center mt-1">
-          <p className="text-[11.3px] text-[#3D37F1] ">
-            {monthMap(dateobj[1])}
+          <p className="text-[11.3px] font-[700] text-[#3D37F1] uppercase">
+            {monthMap(parseInt(dateobj[1]))}
           </p>
           <h1 className="text-[28.4px] font-bold leading-8">{dateobj[0]}</h1>
         </span>
@@ -51,7 +63,7 @@ function Card1({ date, title, description, place, time, image, id }: Card1) {
             <span className="flex items-center gap-1">
               <Pin />
               <p className="underline text-[12px]">
-                {limitWords(place || "", 15)}
+                {limitWords(city || country || place || "", 15)}
               </p>
             </span>
             {!(timeObj == "00:00:00") && (
@@ -63,7 +75,7 @@ function Card1({ date, title, description, place, time, image, id }: Card1) {
               </span>
             )}
           </span>
-          <p className="text-[12px] mt-[8px]">
+          <p className="text-[12px] mt-[8px] text-[#6A6A6A]">
             {limitWords(description || "", 65)}
           </p>
         </span>
