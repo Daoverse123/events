@@ -13,13 +13,16 @@ function Card4({
   console.log("c", count);
   return (
     <picture
+      onClick={() => {
+        window.open(`/discover/?city=${place}`, "_blank");
+      }}
       key={idx + "city"}
-      className="flex max-[1150px]:flex-grow overflow-hidden relative w-[315.5px] h-[396px] max-[1150px]:w-[171px] max-[1150px]:h-[194px] bg-red-300 rounded-xl"
+      className="cursor-pointer flex max-[1150px]:flex-grow overflow-hidden relative w-[315.5px] h-[396px] max-[1150px]:w-[171px] max-[1150px]:h-[194px] bg-red-300 rounded-xl"
     >
       <img
         key={idx + "img"}
         className="w-full h-full brightness-50 object-cover"
-        src={"https://picsum.photos/316/396#" + idx}
+        src={`/city/${idx + 1}-min.jpg`}
         alt=""
       />
       <span className="flex flex-col py-[30px] px-[17px]  top-0 left-0 absolute w-full h-full z-10 max-[1150px]:py-1">

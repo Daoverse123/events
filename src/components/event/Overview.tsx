@@ -8,6 +8,8 @@ const serif = DM_Serif_Display({
 import { Event } from "@/types";
 
 function Overview({ data }: { data: Event }) {
+  let dateobj = new Date(data.start_date).toLocaleDateString().split("/");
+  let timeObj = new Date(data.start_date).toLocaleTimeString();
   return (
     <div className="flex flex-col w-[1300px]  max-[1150px]:w-[100vw] max-[1150px]:px-2 max-[1150px]:mb-36">
       <span className="flex w-full max-[1150px]:flex-col">
@@ -31,20 +33,23 @@ function Overview({ data }: { data: Event }) {
       <div className="flex w-[1300px] max-[1150px]:w-full  mt-[67.5px] max-[1150px]:mt-12 gap-[50px]  max-[1150px]:flex-col">
         <span className="border rounded-lg h-fit flex w-[800px] max-[1150px]:w-full flex-col py-[36px] px-[40px] max-[1150px]:px-4">
           <p className="text-[18px] max-[1150px]:text-[16px]">Date & Timings</p>
-          <span className="flex gap-[32px] mt-[21px]">
-            <span className="flex items-center gap-3">
-              <Clock />
-              <p className="text-[24px] max-[1150px]:text-[16.6px]">
-                9:30 am IST
-              </p>
+          {data.start_date && (
+            <span className="flex gap-[32px] mt-[21px]">
+              <span className="flex items-center gap-3">
+                <Clock />
+                <p className="text-[24px] max-[1150px]:text-[16.6px]">
+                  {timeObj}
+                </p>
+              </span>
+
+              <span className="flex items-center gap-3">
+                <Calender />
+                <p className="text-[24px] max-[1150px]:text-[16.6px]">
+                  {data?.start_date?.split("T")[0]}
+                </p>
+              </span>
             </span>
-            <span className="flex items-center gap-3">
-              <Calender />
-              <p className="text-[24px] max-[1150px]:text-[16.6px]">
-                {data.start_date.split("T")[0]}
-              </p>
-            </span>
-          </span>
+          )}
           <p className="text-[18px] font-medium mt-[40px] max-[1150px]:text-[16px]">
             About Event
           </p>

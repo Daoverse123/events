@@ -51,7 +51,7 @@ function HomePage() {
       {/* News and trending */}
       <Sec1
         title={"New and trending"}
-        endpoint={`${process.env.API}/truts-event?sort={"start_date": 1}`}
+        endpoint={`${process.env.API}/truts-event`}
         id={secs[0]}
       />
       {/* Popular Events */}

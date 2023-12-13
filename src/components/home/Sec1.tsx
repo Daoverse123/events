@@ -30,7 +30,7 @@ function Sec1({
   endpoint: string;
   id?: string;
 }) {
-  const query = useQuery("fetch", async () => {
+  const query = useQuery([endpoint], async () => {
     let res = await axios.get(endpoint);
     return res.data.data.result as EventAll[];
   });

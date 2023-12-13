@@ -89,7 +89,7 @@ const generateFilters = (filKeys: FilterObj) => {
 function DiscoverPage() {
   const [filterOpen, setfilterOpen] = useState(true);
 
-  let { filters } = useFilterStore();
+  let { filters, add } = useFilterStore();
 
   const query = useQuery(["fetch", filters], async (parms) => {
     let filKeys = parms.queryKey[1] as FilterObj;
@@ -338,6 +338,18 @@ const FilterGroup = ({
 
   let { add, remove, reset } = useFilterStore();
   const [state, setstate] = useState(genList());
+
+  useEffect(() => {
+    let params = location.search;
+    if (params && name == "city") {
+      let city = params.split("=")[1];
+      add("city", city);
+      setstate((s) => {
+        s[city] = true;
+        return { ...s };
+      });
+    }
+  }, []);
 
   return (
     <div className="flex flex-col w-full border rounded-md">
