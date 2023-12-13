@@ -13,12 +13,12 @@ import { EventAll } from "@/types";
 
 type LocationCount = {
   count: number;
-  location: string;
+  city: string;
 };
 
 function Sec5({ id }: { id?: string }) {
   const query = useQuery("location", async () => {
-    let res = await axios.get(`${process.env.API}/truts-event/locations`);
+    let res = await axios.get(`${process.env.API}/truts-event/cities`);
     return res.data.data.result as LocationCount[];
   });
 
@@ -34,16 +34,22 @@ function Sec5({ id }: { id?: string }) {
       </h1>
       <div className="flex flex-wrap mt-[32px] gap-[16px] pb-4">
         {query.isSuccess &&
-          query.data.slice(0, 6).map((cd, idx) => {
-            return (
-              <Card4
-                place={cd.location}
-                count={cd.count}
-                key={idx + "city"}
-                idx={idx}
-              />
-            );
-          })}
+          query.data
+            .sort((a, b) => {
+              return b.count - a.count;
+            })
+            .filter((s) => s.city)
+            .slice(0, 6)
+            .map((cd, idx) => {
+              return (
+                <Card4
+                  place={cd.city}
+                  count={cd.count}
+                  key={idx + "city"}
+                  idx={idx}
+                />
+              );
+            })}
       </div>
     </div>
   );
