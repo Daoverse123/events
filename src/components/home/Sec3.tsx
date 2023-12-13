@@ -41,6 +41,8 @@ function Sec3() {
                 key={"cd" + idx}
                 image={cd.banner.secure_url}
                 id={cd._id}
+                city={cd.city}
+                country={cd.country}
               />
             );
           })}

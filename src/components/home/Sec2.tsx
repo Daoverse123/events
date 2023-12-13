@@ -13,14 +13,19 @@ import axios from "axios";
 
 import { EventAll } from "@/types";
 
-function Sec2() {
-  const query = useQuery("fetch", async () => {
-    let res = await axios.get(`${process.env.API}/truts-event`);
+function Sec2({ id }: { id?: string }) {
+  const query = useQuery("fetch-popular", async () => {
+    let res = await axios.get(
+      `${process.env.API}/truts-event?sort={"start_date": -1}`
+    );
     return res.data.data.result as EventAll[];
   });
 
   return (
-    <div className="flex flex-col w-full pl-16 mt-[80px] max-[1150px]:mt-[64px] Popular Events max-[1150px]:px-3 max-[1150px]:max-w-[425px] max-[1150px]:mx-auto">
+    <div
+      id={id}
+      className="flex flex-col w-full pl-16 mt-[80px] max-[1150px]:mt-[64px] Popular Events max-[1150px]:px-3 max-[1150px]:max-w-[425px] max-[1150px]:mx-auto mb-12"
+    >
       <h1
         className={`text-[42px] ${serif.className} max-[1150px]:text-[24px] `}
       >
@@ -36,6 +41,7 @@ function Sec2() {
                   logo={cd?.banner?.secure_url}
                   description={cd.description}
                   key={"scd" + idx}
+                  startdate={cd.start_date}
                 />
               );
             })

@@ -1,20 +1,64 @@
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
+import debounce from "lodash.debounce";
+import axios from "axios";
+import limitWords from "@/utils/limitwords";
+import { useMediaQuery } from "usehooks-ts";
+
+type Event = {
+  _index: string;
+  _id: string;
+  _score: number;
+  _source: {
+    name: string;
+    logo: {
+      secure_url: string;
+    };
+    banner: {
+      secure_url: string;
+    };
+    location: string;
+    description: string;
+    tags: string[];
+    category: string;
+    type: string;
+    visible: boolean;
+    verified: boolean;
+    trending: boolean;
+    start_date: string | null;
+    end_date: string | null;
+  };
+};
 
 function Nav() {
+  const matches = useMediaQuery("(max-width: 750px)");
+  const [showMSearch, setshowMSearch] = useState(false);
+  const [showMmenu, setshowMmenu] = useState(false);
+
   return (
     <div className="flex justify-between  w-full px-[70px] py-[13px] border-b-2 items-center max-[1150px]:px-[16px]">
       <Logo />
-      {/* <span className="max-[1150px]:hidden w-[458px] gap-[8px] h-[38px] px-[16px] rounded-[12px] border flex items-center">
-        <SearchIcon />
-        <input
-          className="flex flex-1 text-[12px] h-full"
-          placeholder="Search by Event names"
-          type="text"
-          name=""
-          id=""
+      {showMmenu && (
+        <MMenu
+          close={() => {
+            setshowMmenu(false);
+          }}
         />
-      </span> */}
-
+      )}
+      {matches && showMSearch && (
+        <MSearch
+          close={() => {
+            setshowMSearch(false);
+          }}
+        />
+      )}
+      {matches && (
+        <MSearchIcon
+          click={() => {
+            setshowMSearch(true);
+          }}
+        />
+      )}
+      {!matches && <Search />}
       <picture className="flex items-center gap-16">
         <span className="flex gap-[60px] max-[1150px]:hidden">
           {["home", "discover"].map((ele) => {
@@ -31,15 +75,137 @@ function Nav() {
             );
           })}
         </span>
-        <img
-          className="w-[32px] h-[32px] rounded-full border-[2px]"
-          src="/pb.png"
-          alt=""
-        />
       </picture>
+      <span
+        onClick={() => {
+          setshowMmenu(true);
+        }}
+      >
+        {matches && <HamIcon />}
+      </span>
     </div>
   );
 }
+
+const fetchData = async (query: string) => {
+  let res = await axios(`${process.env.API}/search/truts_events/${query}`);
+  return res.data.data.result.hits.hits as Event[];
+};
+
+function Search() {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [results, setresults] = useState<Event[]>([]);
+
+  const [visible, setvisible] = useState<boolean>(false);
+
+  const debouncedSearch = useCallback(
+    debounce(async (query: string) => {
+      let data = await fetchData(query);
+      console.log(data);
+
+      setresults(data);
+    }, 150),
+    []
+  ); // Adjust delay as needed
+
+  useEffect(() => {
+    searchTerm.length > 0 && debouncedSearch(searchTerm);
+  }, [searchTerm]);
+
+  return (
+    <span className="flex flex-col relative max-w-[458px] w-full">
+      <span className=" max-w-[458px] w-full gap-[8px] h-[38px] px-[16px] rounded-[12px] border flex items-center">
+        <SearchIcon />
+        <input
+          className="flex flex-1 text-[12px] h-full"
+          placeholder="Search by Event names"
+          type="text"
+          name=""
+          id=""
+          onBeforeInputCapture={() => {
+            setvisible(true);
+          }}
+          onBlur={() => {
+            setTimeout(() => {
+              setvisible(false);
+            }, 250);
+          }}
+          onChange={(e) => {
+            setSearchTerm(e.target.value);
+          }}
+          onKeyDown={(e) => {
+            if (e.key == "Enter") {
+              debouncedSearch(searchTerm);
+            }
+          }}
+        />
+      </span>
+
+      {results.length > 0 && visible && (
+        <div className="flex flex-col bg-white w-full absolute mt-[38px] shadow-2xl h-fit rounded-lg overflow-hidden">
+          {results.map((st) => {
+            return (
+              <span
+                key={st._id}
+                className="flex w-full h-10 border-b  items-center px-3 cursor-pointer text-black"
+                onClick={() => {
+                  window.open(`/event/${st._id}`, "_blank");
+                }}
+              >
+                {limitWords(st._source.name, 45)}
+              </span>
+            );
+          })}
+        </div>
+      )}
+    </span>
+  );
+}
+
+const MSearch = ({ close }: { close: () => any }) => {
+  return (
+    <div className="flex fixed gap-2 top-0 left-0 bg-white h-20 w-full justify-center items-center">
+      <span className="w-[90%] ">
+        <Search />
+      </span>
+      <span onClick={() => close()}>
+        <CloseIcon />
+      </span>
+    </div>
+  );
+};
+
+const MMenu = ({ close }: { close: () => any }) => {
+  return (
+    <div className="w-full z-50  h-screen fixed left-0 top-0 bg-[#000000c0]">
+      <span className="flex flex-col py-4 px-4 max-w-[80%] w-full h-full bg-white shadow-2xl ml-auto">
+        <span className="ml-auto flex w-full justify-between items-center">
+          <Logo />
+          <span
+            onClick={() => {
+              close();
+            }}
+          >
+            <CloseIcon />
+          </span>
+        </span>
+        <div className="flex flex-col ml-auto mt-16 gap-8">
+          {["home", "discover"].map((ele) => {
+            return (
+              <a
+                className="text-3xl capitalize cursor-pointer hover:text-blue-600 border-r-[3px] border-blue-600 px-4 h-16 flex items-center text-right"
+                key={"lk" + ele}
+                href={`/${ele}`}
+              >
+                {ele}
+              </a>
+            );
+          })}
+        </div>
+      </span>
+    </div>
+  );
+};
 
 function Logo() {
   return (
@@ -100,6 +266,65 @@ function Logo() {
   );
 }
 
+function CloseIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="20"
+      height="20"
+      fill="none"
+      viewBox="0 0 25 25"
+      className="outline-[#716e6e] outline rounded-full cursor-pointer"
+    >
+      <path
+        stroke="#716e6e"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2.344"
+        d="M19.531 5.469L5.47 19.53M19.531 19.531L5.47 5.47"
+      ></path>
+    </svg>
+  );
+}
+
+function MSearchIcon({ click }: { click: () => any }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="27"
+      height="26"
+      fill="none"
+      viewBox="0 0 27 26"
+      className="ml-auto mr-4 cursor-pointer"
+      onClick={() => {
+        click();
+      }}
+    >
+      <path
+        fill="#49536E"
+        fillRule="evenodd"
+        d="M11.442 20.582a9.208 9.208 0 119.209-9.208 9.169 9.169 0 01-1.977 5.701l4.91 4.91a1.083 1.083 0 01-1.532 1.532l-4.91-4.91a9.17 9.17 0 01-5.7 1.975zm5.041-4.29a1.048 1.048 0 00-.125.124 7.042 7.042 0 11.125-.125z"
+        clipRule="evenodd"
+      ></path>
+      <mask
+        style={{ maskType: "luminance" }}
+        width="22"
+        height="22"
+        x="2"
+        y="2"
+        maskUnits="userSpaceOnUse"
+      >
+        <path
+          fill="#fff"
+          fillRule="evenodd"
+          d="M11.442 20.582a9.208 9.208 0 119.209-9.208 9.169 9.169 0 01-1.977 5.701l4.91 4.91a1.083 1.083 0 01-1.532 1.532l-4.91-4.91a9.17 9.17 0 01-5.7 1.975zm5.041-4.29a1.048 1.048 0 00-.125.124 7.042 7.042 0 11.125-.125z"
+          clipRule="evenodd"
+        ></path>
+      </mask>
+    </svg>
+  );
+}
+
 function SearchIcon() {
   return (
     <svg
@@ -134,6 +359,43 @@ function SearchIcon() {
       <g mask="url(#mask0_12050_35843)">
         <path fill="#9A9A9A" d="M0 0.55H20V20.55H0z"></path>
       </g>
+    </svg>
+  );
+}
+
+function HamIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="27"
+      height="21"
+      fill="none"
+      viewBox="0 0 27 21"
+    >
+      <rect
+        width="26.125"
+        height="2.5"
+        x="0.005"
+        y="0.5"
+        fill="#121212"
+        rx="1.25"
+      ></rect>
+      <rect
+        width="26.125"
+        height="2.5"
+        x="0.005"
+        y="8.813"
+        fill="#121212"
+        rx="1.25"
+      ></rect>
+      <rect
+        width="26.125"
+        height="2.5"
+        x="0.005"
+        y="17.125"
+        fill="#121212"
+        rx="1.25"
+      ></rect>
     </svg>
   );
 }
