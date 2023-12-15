@@ -59,7 +59,9 @@ function HomePage() {
           title={"New and Trending"}
           endpoint={`${
             process.env.API
-          }/truts-event?sort={"start_date": 1}&filter={"end_date": {"gte": ${new Date().toISOString()}}}`}
+          }/truts-event?sort={"start_date": 1}&filter={"end_date": ${JSON.stringify(
+            { gte: new Date().toISOString() }
+          )} }`}
           id={secs[0]}
         />
         {/* Popular Events */}
@@ -69,7 +71,9 @@ function HomePage() {
           title={"Meetups"}
           endpoint={`${
             process.env.API
-          }/truts-event?sort={"start_date": -1}&filter={end_date": {"gte": ${new Date().toISOString()}}}`}
+          }/truts-event?sort={"start_date": -1}&filter={"end_date": ${JSON.stringify(
+            { gte: new Date().toISOString() }
+          )} }`}
           id={secs[2]}
         />
         {/* <Sec4 /> */}

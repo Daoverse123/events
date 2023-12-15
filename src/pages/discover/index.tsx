@@ -86,7 +86,7 @@ const useFilterStore = create<SortState>()((set) => ({
 }));
 
 const generateFilters = (filKeys: FilterObj, daterange_init: DateRange) => {
-  let dateRange = {};
+  let dateRange: any = {};
   // end_date: { gte: new Date().toISOString() },
 
   if (daterange_init.start.length > 0) {

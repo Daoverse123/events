@@ -45,11 +45,11 @@ function Card6({
           <span className="flex gap-2 items-center">
             <p className="flex text-[8px] gap-1">
               <Clock />
-              {timeObj == "00:00:00" ? "N/A" : timeObj}
+              {!date ? "N/A" : timeObj}
             </p>
             <p className="flex text-[8px] gap-1">
               <Callender />
-              {dateobj}
+              {date ? dateobj : "N/A"}
             </p>
           </span>
           <span className="flex gap-2 items-center">

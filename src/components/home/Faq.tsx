@@ -40,28 +40,11 @@ export const Faq = () => {
 
   return (
     <section className="flex mx-auto max-[1200px]:flex-col-reverse  py-[78px] max-[1200px]:py-[49px] max-[1200px]:px-[29px] gap-[120px] max-[1200px]:gap-9">
-      <p className="max-[1200px]:flex hidden  items-center text-[#3065F3] gap-2 border-b-2 border-[#3065F3] w-max">
-        More FAQ{" "}
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="15"
-          height="14"
-          fill="none"
-          viewBox="0 0 15 14"
-        >
-          <path
-            fill="#3065F3"
-            fillRule="evenodd"
-            d="M0 6.532A.933.933 0 01.933 5.6h10.81L7.736 1.595A.934.934 0 019.058.274l5.598 5.598a.934.934 0 010 1.32l-5.598 5.599a.934.934 0 01-1.322-1.321l4.007-4.005H.933A.933.933 0 010 6.532z"
-            clipRule="evenodd"
-          ></path>
-        </svg>
-      </p>
       <div className="flex flex-col  border-t-[1px] border-[rgba(0, 0, 0, 0.20)]">
         {faqs.map((faq, key) => {
           return (
             <span
-              className="flex flex-col  border-b-[1px] border-[rgba(0, 0, 0, 0.20)] p-[37px]"
+              className="flex flex-col  border-b-[1px] border-[rgba(0, 0, 0, 0.20)] p-[37px] max-[425px]:px-0"
               key={"faq" + key}
               onClick={() => {
                 setarr((r) => {
