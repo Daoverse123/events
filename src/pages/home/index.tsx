@@ -57,7 +57,9 @@ function HomePage() {
         {/* News and trending */}
         <Sec1
           title={"New and Trending"}
-          endpoint={`${process.env.API}/truts-event?sort={"start_date": 1}`}
+          endpoint={`${
+            process.env.API
+          }/truts-event?sort={"start_date": 1}&filter={"end_date": {"gte": ${new Date().toISOString()}}}`}
           id={secs[0]}
         />
         {/* Popular Events */}
@@ -65,7 +67,9 @@ function HomePage() {
         {/* Meetups */}
         <Sec1
           title={"Meetups"}
-          endpoint={`${process.env.API}/truts-event?sort={"start_date": -1}`}
+          endpoint={`${
+            process.env.API
+          }/truts-event?sort={"start_date": -1}&filter={end_date": {"gte": ${new Date().toISOString()}}}`}
           id={secs[2]}
         />
         {/* <Sec4 /> */}
