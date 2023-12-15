@@ -32,11 +32,17 @@ type FilterObj = {
   country: string[];
   tag: string[];
 };
+
+type DateRange = { start: string; end: string };
+
 interface SortState {
   filters: FilterObj;
+  daterange: DateRange;
   add: (label: Label, item: string) => void;
   remove: (label: Label, item: string) => void;
   reset: (label: Label) => void;
+  setrange: (label: "start" | "end", date: string) => void;
+  resetrange: () => void;
 }
 
 const useFilterStore = create<SortState>()((set) => ({
@@ -45,6 +51,7 @@ const useFilterStore = create<SortState>()((set) => ({
     country: [],
     tag: [],
   },
+  daterange: { start: "", end: "" },
   add: (label: Label, item: string) => {
     return set((st) => {
       st.filters[label].push(item);
@@ -53,7 +60,7 @@ const useFilterStore = create<SortState>()((set) => ({
   },
   remove: (label: Label, item: string) => {
     return set((st) => {
-      st.filters[label] = st.filters[label].filter((it) => it !== item);
+      st.filters[label] = st.filters[label].filter((it: string) => it !== item);
       return { ...st };
     });
   },
@@ -63,15 +70,44 @@ const useFilterStore = create<SortState>()((set) => ({
       return { ...st };
     });
   },
+  setrange: (label: "start" | "end", date: string) => {
+    return set((st) => {
+      st.daterange[label] = date;
+      return { ...st };
+    });
+  },
+  resetrange: () => {
+    return set((st) => {
+      st.daterange["start"] = "";
+      st.daterange["end"] = "";
+      return { ...st };
+    });
+  },
 }));
 
-const generateFilters = (filKeys: FilterObj) => {
+const generateFilters = (filKeys: FilterObj, daterange_init: DateRange) => {
+  let dateRange = {};
+  // end_date: { gte: new Date().toISOString() },
+
+  if (daterange_init.start.length > 0) {
+    dateRange = {
+      ...dateRange,
+      start_date: { gte: new Date(daterange_init.start).toISOString() },
+    };
+  }
+  if (daterange_init.end.length > 0) {
+    dateRange = {
+      ...dateRange,
+      end_date: { lte: new Date(daterange_init.end).toISOString() },
+    };
+  }
+
   if (
     filKeys.tag.length == 0 &&
     filKeys.city.length == 0 &&
     filKeys.country.length == 0
   ) {
-    return "";
+    return `&filter=${JSON.stringify(dateRange)}`;
   } else {
     let updateObj = {};
     if (filKeys.tag.length != 0) {
@@ -83,6 +119,7 @@ const generateFilters = (filKeys: FilterObj) => {
     if (filKeys.country.length != 0) {
       updateObj = { ...updateObj, country: filKeys.country };
     }
+    updateObj = { ...updateObj, ...dateRange };
     let query = `&filter=${JSON.stringify(updateObj)}`;
     return query;
   }
@@ -91,14 +128,18 @@ const generateFilters = (filKeys: FilterObj) => {
 function DiscoverPage() {
   const [filterOpen, setfilterOpen] = useState(true);
 
-  let { filters, add } = useFilterStore();
+  let { filters, add, daterange } = useFilterStore();
 
-  const query = useQuery(["fetch", filters], async (parms) => {
+  const query = useQuery(["fetch", filters, daterange], async (parms) => {
     let filKeys = parms.queryKey[1] as FilterObj;
+    let dateRange = parms.queryKey[2] as DateRange;
 
     let baseURL = `${
       process.env.API
-    }/truts-event?sort={"start_date": 1}${generateFilters(filKeys)}`;
+    }/truts-event?limit=9999&sort={"start_date": 1}${generateFilters(
+      filKeys,
+      dateRange
+    )}`;
     let url = baseURL;
     let res = await axios.get(url);
 
@@ -219,17 +260,8 @@ function SideNav({ cn, onClick }: { cn?: string; onClick?: () => any }) {
       {/* <Search /> */}
       <span className="flex w-full justify-between">
         <h1 className="text-[20px] font-medium">Filters</h1>
-        {/* <p className="text-red-600 cursor-pointer">Reset</p> */}
       </span>
       <FilterSection />
-      {/* {categories.isSuccess && (
-        <FilterGroup
-          name="category"
-          list={categories.data.map((ele) => {
-            return { tag: ele.tag, count: ele.count };
-          })}
-        />
-      )} */}
     </nav>
   );
 }
@@ -283,8 +315,10 @@ const FilterSection = () => {
     let res = await axios.get(`${process.env.API}/truts-event/tags`);
     return res.data.data.result as CategoryCount[];
   });
+
   return (
     <>
+      <DateRange />
       {city.isSuccess && (
         <FilterGroup
           name="city"
@@ -310,6 +344,50 @@ const FilterSection = () => {
         />
       )}
     </>
+  );
+};
+
+const DateRange = () => {
+  let { setrange, resetrange, filters, daterange } = useFilterStore();
+
+  return (
+    <div className="flex flex-col w-full border rounded-md">
+      <h1 className="p-[18px] bg-[#E0E0E0] flex justify-between w-full h-[57px] text-[16px] capitalize">
+        Date Range
+        <p
+          onClick={() => {
+            resetrange();
+          }}
+          className="text-red-500 cursor-pointer"
+        >
+          Reset
+        </p>
+      </h1>
+      <div className="flex flex-col px-4">
+        <span className="flex justify-between py-4 items-center">
+          <h1>Start Date : </h1>
+          <input
+            value={daterange.start}
+            onChange={(e) => {
+              setrange("start", e.target.value);
+            }}
+            className="border-[1px] px-2 text-gray-500"
+            type="date"
+          />
+        </span>
+        <span className="flex  justify-between py-4 items-center">
+          <h1>End Date : </h1>
+          <input
+            value={daterange.end}
+            onChange={(e) => {
+              setrange("end", e.target.value);
+            }}
+            className="border-[1px] px-2 text-gray-500"
+            type="date"
+          />
+        </span>
+      </div>
+    </div>
   );
 };
 
