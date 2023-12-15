@@ -27,49 +27,55 @@ import { EventAll } from "@/types";
 import axios from "axios";
 import mq from "@/utils/mq";
 import Footer from "@/components/Footer";
+import Head from "next/head";
 let secs = ["Trending", "Popular Events", "Meetups", "Cities"];
 
 function HomePage() {
   return (
-    <section className="flex flex-col w-full min-h-screen">
-      <Nav />
-      {/* <Hero /> */}
-      <picture
-        className={
-          "flex w-full my-12 max-[1500px]:my-6 overflow-hidden justify-center max-[1150px]:my-0"
-        }
-      >
-        <img
+    <>
+      <Head>
+        <title>Truts Events</title>
+      </Head>
+      <section className="flex flex-col w-full min-h-screen">
+        <Nav />
+        {/* <Hero /> */}
+        <picture
           className={
-            "flex w-[90%] object-contain rounded-2xl max-[1150px]:w-full max-[1150px]:rounded-none"
+            "flex w-full my-12 max-[1500px]:my-6 overflow-hidden justify-center max-[1150px]:my-0"
           }
-          src="/hero.png"
-          alt=""
+        >
+          <img
+            className={
+              "flex w-[90%] object-contain rounded-2xl max-[1150px]:w-full max-[1150px]:rounded-none"
+            }
+            src="/hero.png"
+            alt=""
+          />
+        </picture>
+        {/* Anchors */}
+        <Anchors />
+        {/* News and trending */}
+        <Sec1
+          title={"New and Trending"}
+          endpoint={`${process.env.API}/truts-event?sort={"start_date": 1}`}
+          id={secs[0]}
         />
-      </picture>
-      {/* Anchors */}
-      <Anchors />
-      {/* News and trending */}
-      <Sec1
-        title={"New and Trending"}
-        endpoint={`${process.env.API}/truts-event?sort={"start_date": 1}`}
-        id={secs[0]}
-      />
-      {/* Popular Events */}
-      <Sec2 id={secs[1]} />
-      {/* Meetups */}
-      <Sec1
-        title={"Meetups"}
-        endpoint={`${process.env.API}/truts-event?sort={"start_date": -1}`}
-        id={secs[2]}
-      />
-      {/* <Sec4 /> */}
-      {/* City Events */}
-      <Sec5 id={secs[3]} />
-      {/* <Sec6 /> */}
-      <Faq />
-      <Footer />
-    </section>
+        {/* Popular Events */}
+        <Sec2 id={secs[1]} />
+        {/* Meetups */}
+        <Sec1
+          title={"Meetups"}
+          endpoint={`${process.env.API}/truts-event?sort={"start_date": -1}`}
+          id={secs[2]}
+        />
+        {/* <Sec4 /> */}
+        {/* City Events */}
+        <Sec5 id={secs[3]} />
+        {/* <Sec6 /> */}
+        <Faq />
+        <Footer />
+      </section>
+    </>
   );
 }
 
