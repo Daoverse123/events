@@ -43,7 +43,7 @@ function HomePage() {
           className={
             "flex w-[90%] object-contain rounded-2xl max-[1150px]:w-full max-[1150px]:rounded-none"
           }
-          src="/hero.svg"
+          src="/hero.png"
           alt=""
         />
       </picture>
