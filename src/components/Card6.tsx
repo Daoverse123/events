@@ -38,7 +38,7 @@ function Card6({
       </picture>
       <span className="flex w-full h-[313px] py-2 px-3 justify-between">
         <span>
-          <p className="text-[8px]">Event Name</p>
+          {/* <p className="text-[8px]">Event Name</p> */}
           <h1 className="text-[12px]"> {limitWords(title || "", 18)}</h1>
         </span>
         <div className="flex flex-col gap-1">

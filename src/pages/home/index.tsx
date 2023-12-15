@@ -26,6 +26,7 @@ import { EventAll } from "@/types";
 
 import axios from "axios";
 import mq from "@/utils/mq";
+import Footer from "@/components/Footer";
 let secs = ["Trending", "Popular Events", "Meetups", "Cities"];
 
 function HomePage() {
@@ -42,7 +43,7 @@ function HomePage() {
           className={
             "flex w-[90%] object-contain rounded-2xl max-[1150px]:w-full max-[1150px]:rounded-none"
           }
-          src="/placeholder.png"
+          src="/hero.svg"
           alt=""
         />
       </picture>
@@ -50,8 +51,8 @@ function HomePage() {
       <Anchors />
       {/* News and trending */}
       <Sec1
-        title={"New and trending"}
-        endpoint={`${process.env.API}/truts-event`}
+        title={"New and Trending"}
+        endpoint={`${process.env.API}/truts-event?sort={"start_date": 1}`}
         id={secs[0]}
       />
       {/* Popular Events */}
@@ -59,7 +60,7 @@ function HomePage() {
       {/* Meetups */}
       <Sec1
         title={"Meetups"}
-        endpoint={`${process.env.API}/truts-event?sort={"start_date": 1}`}
+        endpoint={`${process.env.API}/truts-event?sort={"start_date": -1}`}
         id={secs[2]}
       />
       {/* <Sec4 /> */}
@@ -67,6 +68,7 @@ function HomePage() {
       <Sec5 id={secs[3]} />
       {/* <Sec6 /> */}
       <Faq />
+      <Footer />
     </section>
   );
 }

@@ -6,11 +6,13 @@ function Card2({
   title,
   description,
   startdate,
+  id,
 }: {
   logo: string;
   title: string;
   description: string;
   startdate: string;
+  id: string;
 }) {
   let dateobj = new window.Date(startdate).toLocaleDateString();
   let date = null;
@@ -21,7 +23,12 @@ function Card2({
 
   //debugger;
   return (
-    <div className="flex border rounded-xl gap-[17px] w-[401px] items-center h-[64px] px-[18px] py-[13px] bg-white">
+    <div
+      onClick={() => {
+        window.open(`/event/${id}`, "_blank");
+      }}
+      className="flex border rounded-xl gap-[17px] w-[401px] items-center h-[64px] px-[18px] py-[13px] bg-white cursor-pointer"
+    >
       <picture className="w-[34px] h-[34px]">
         <img
           className="w-full h-full object-cover rounded-[6px]"

@@ -24,10 +24,10 @@ function Overview({ data }: { data: Event }) {
             {data.location}
           </span>
         </span>
-        <button className="mt-14 ml-auto flex justify-center px-11 h-[42px] items-center gap-2 outline rounded-lg ">
+        {/* <button className="mt-14 ml-auto flex justify-center px-11 h-[42px] items-center gap-2 outline rounded-lg ">
           <Calender />
           <p className="text-black">Add to Calender</p>
-        </button>
+        </button> */}
       </span>
 
       <div className="flex w-[1300px] max-[1150px]:w-full  mt-[67.5px] max-[1150px]:mt-12 gap-[50px]  max-[1150px]:flex-col">
