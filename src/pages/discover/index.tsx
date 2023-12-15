@@ -126,7 +126,7 @@ const generateFilters = (filKeys: FilterObj, daterange_init: DateRange) => {
 };
 
 function DiscoverPage() {
-  const [filterOpen, setfilterOpen] = useState(true);
+  const [filterOpen, setfilterOpen] = useState(false);
 
   let { filters, add, daterange } = useFilterStore();
 
