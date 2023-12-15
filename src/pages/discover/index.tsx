@@ -22,6 +22,8 @@ import limitWords from "@/utils/limitwords";
 import { create } from "zustand";
 import { json } from "stream/consumers";
 import { useMediaQuery } from "usehooks-ts";
+import Head from "next/head";
+import Footer from "@/components/Footer";
 
 type Label = "city" | "country" | "tag";
 
@@ -110,56 +112,62 @@ function DiscoverPage() {
   }, [matches]);
 
   return (
-    <div className="flex flex-col w-full h-max">
-      <Nav />
-      <section className="flex w-full min-h-screen px-[70px] gap-[34px] pt-[85px] h-max pb-28 max-[1150px]:px-4 max-[1150px]:pt-0 relative">
-        <SideNav cn={"max-[1150px]:hidden flex"} />
-        {filterOpen && (
-          <MobileFilter
-            close={() => {
-              setfilterOpen(!filterOpen);
-            }}
-          />
-        )}
-        <div className="flex flex-col w-full mt-[80px]">
-          <div className="flex flex-col w-full text-[24px] font-bold">
-            <h1 className="max-[1150px]:text-[20px] flex justify-between">
-              Showing {query.isSuccess && query.data?.length} results{" "}
-              <Filtericon
-                onClick={() => {
-                  setfilterOpen(!filterOpen);
-                }}
-                cn="hidden max-[1150px]:flex"
-              />
-            </h1>
-            {/* <Selector
+    <>
+      <Head>
+        <title>Truts Events</title>
+      </Head>
+      <div className="flex flex-col w-full h-max">
+        <Nav />
+        <section className="flex w-full min-h-screen px-[70px] gap-[34px] pt-[85px] h-max pb-28 max-[1150px]:px-4 max-[1150px]:pt-0 relative">
+          <SideNav cn={"max-[1150px]:hidden flex"} />
+          {filterOpen && (
+            <MobileFilter
+              close={() => {
+                setfilterOpen(!filterOpen);
+              }}
+            />
+          )}
+          <div className="flex flex-col w-full mt-[80px]">
+            <div className="flex flex-col w-full text-[24px] font-bold">
+              <h1 className="max-[1150px]:text-[20px] flex justify-between">
+                Showing {query.isSuccess && query.data?.length} results{" "}
+                <Filtericon
+                  onClick={() => {
+                    setfilterOpen(!filterOpen);
+                  }}
+                  cn="hidden max-[1150px]:flex"
+                />
+              </h1>
+              {/* <Selector
               className="mt-[24px] mb-[40px]"
               list={["All", "Conference", "Meetups"]}
               setter={() => {}}
             /> */}
+            </div>
+            <div className="flex w-full gap-x-2 gap-y-6 flex-wrap h-min mt-8 max-[425px]:justify-center">
+              {query.isSuccess &&
+                query.data.map((cd, idx) => {
+                  return (
+                    <Card6
+                      id={cd._id}
+                      place={cd.location}
+                      time={cd.start_date}
+                      title={cd.name}
+                      description={cd.description}
+                      image={cd.banner.secure_url}
+                      date={cd.start_date}
+                      key={"c6" + idx}
+                      city={cd.city}
+                      country={cd.country}
+                    />
+                  );
+                })}
+            </div>
           </div>
-          <div className="flex w-full gap-x-2 gap-y-6 flex-wrap h-min mt-8 max-[425px]:justify-center">
-            {query.isSuccess &&
-              query.data.map((cd, idx) => {
-                return (
-                  <Card6
-                    id={cd._id}
-                    place={cd.location}
-                    time={cd.start_date}
-                    title={cd.name}
-                    description={cd.description}
-                    image={cd.banner.secure_url}
-                    date={cd.start_date}
-                    key={"c6" + idx}
-                    city={cd.city}
-                    country={cd.country}
-                  />
-                );
-              })}
-          </div>
-        </div>
-      </section>
-    </div>
+        </section>
+      </div>
+      <Footer />
+    </>
   );
 }
 

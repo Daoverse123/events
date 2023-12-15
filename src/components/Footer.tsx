@@ -62,7 +62,7 @@ function Footer() {
           return (
             <li
               onClick={() => {
-                ele == "Get Listed" && (location.href = "/add-offering");
+                location.href = `/${ele}`;
               }}
               className="max-[1200px]:text-[10px] cursor-pointer capitalize"
               key={"nav" + ele}
@@ -79,7 +79,10 @@ function Footer() {
           height="25"
           fill="none"
           viewBox="0 0 25 25"
-          className="max-[1200px]:w-3"
+          className="max-[1200px]:w-3 cursor-pointer"
+          onClick={() => {
+            window.open("https://twitter.truts.xyz/", "_blank");
+          }}
         >
           <g clipPath="url(#clip0_11374_32648)">
             <path
@@ -103,7 +106,10 @@ function Footer() {
           height="19"
           fill="none"
           viewBox="0 0 25 19"
-          className="max-[1200px]:w-3"
+          className="max-[1200px]:w-3 cursor-pointer"
+          onClick={() => {
+            window.open("https://discord.truts.xyz/", "_blank");
+          }}
         >
           <path
             fill="#121212"
@@ -116,7 +122,10 @@ function Footer() {
           height="25"
           fill="none"
           viewBox="0 0 25 25"
-          className="max-[1200px]:w-3"
+          className="max-[1200px]:w-3 cursor-pointer"
+          onClick={() => {
+            window.open("https://events.truts.xyz/", "_blank");
+          }}
         >
           <g clipPath="url(#clip0_11374_32650)">
             <path
