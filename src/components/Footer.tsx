@@ -62,7 +62,11 @@ function Footer() {
           return (
             <li
               onClick={() => {
-                location.href = `/${ele}`;
+                if (ele == "Add Events") {
+                  location.href = `/add-events`;
+                } else {
+                  location.href = `/${ele}`;
+                }
               }}
               className="max-[1200px]:text-[10px] cursor-pointer capitalize"
               key={"nav" + ele}

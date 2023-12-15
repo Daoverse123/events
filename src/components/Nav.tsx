@@ -65,7 +65,9 @@ function Nav() {
             return (
               <p
                 onClick={() => {
-                  location.href = `/${ele}`;
+                  location.href = `/${
+                    ele == "Add Events" ? "add-events" : ele
+                  }`;
                 }}
                 className="text-[14px] text-[#8C93A3] capitalize cursor-pointer"
                 key={ele}
@@ -195,7 +197,7 @@ const MMenu = ({ close }: { close: () => any }) => {
               <a
                 className="text-3xl capitalize cursor-pointer hover:text-blue-600 border-r-[3px] border-blue-600 px-4 h-16 flex items-center text-right"
                 key={"lk" + ele}
-                href={`/${ele}`}
+                href={`/${ele == "add Events" ? "add-events" : ele}`}
               >
                 {ele}
               </a>
