@@ -62,7 +62,11 @@ function Footer() {
           return (
             <li
               onClick={() => {
-                location.href = `/${ele}`;
+                if (ele == "Add Events") {
+                  location.href = `/add-events`;
+                } else {
+                  location.href = `/${ele}`;
+                }
               }}
               className="max-[1200px]:text-[10px] cursor-pointer capitalize"
               key={"nav" + ele}
@@ -124,7 +128,7 @@ function Footer() {
           viewBox="0 0 25 25"
           className="max-[1200px]:w-3 cursor-pointer"
           onClick={() => {
-            window.open("https://events.truts.xyz/", "_blank");
+            window.open("https://truts.xyz/", "_blank");
           }}
         >
           <g clipPath="url(#clip0_11374_32650)">

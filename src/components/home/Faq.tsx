@@ -39,7 +39,7 @@ export const Faq = () => {
   console.log(arr);
 
   return (
-    <section className="flex max-w-[1440px] mx-auto max-[1200px]:flex-col-reverse px-[120px] py-[78px] max-[1200px]:py-[49px] max-[1200px]:px-[29px] gap-[120px] max-[1200px]:gap-9">
+    <section className="flex mx-auto max-[1200px]:flex-col-reverse  py-[78px] max-[1200px]:py-[49px] max-[1200px]:px-[29px] gap-[120px] max-[1200px]:gap-9">
       <p className="max-[1200px]:flex hidden  items-center text-[#3065F3] gap-2 border-b-2 border-[#3065F3] w-max">
         More FAQ{" "}
         <svg
@@ -116,7 +116,7 @@ export const Faq = () => {
             `${serif.className}`
           }
         >
-          How we can help you?
+          Stay Updated
         </h1>
         <p
           className={
@@ -124,8 +124,8 @@ export const Faq = () => {
             ``
           }
         >
-          Follow our newsletter. We will regulary update our latest project and
-          availability.
+          Follow our newsletter. We will regularly update you with our latest
+          developments
         </p>
         <span className="flex gap-2 mt-[32px] max-[425px]:flex-col  max-[425px]:items-center">
           <input
@@ -139,7 +139,7 @@ export const Faq = () => {
             Connect
           </button>
         </span>
-        <p className="max-[1200px]:hidden mt-[42px] flex items-center text-[#3065F3] gap-2 border-b-2 border-[#3065F3] w-max">
+        {/* <p className="max-[1200px]:hidden mt-[42px] flex items-center text-[#3065F3] gap-2 border-b-2 border-[#3065F3] w-max">
           More FAQ{" "}
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -155,7 +155,7 @@ export const Faq = () => {
               clipRule="evenodd"
             ></path>
           </svg>
-        </p>
+        </p> */}
       </div>
     </section>
   );

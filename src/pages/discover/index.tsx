@@ -139,10 +139,10 @@ function DiscoverPage() {
                 />
               </h1>
               {/* <Selector
-              className="mt-[24px] mb-[40px]"
-              list={["All", "Conference", "Meetups"]}
-              setter={() => {}}
-            /> */}
+                className="mt-[24px] mb-[40px]"
+                list={["All", "Conference", "Meetups"]}
+                setter={() => {}}
+              /> */}
             </div>
             <div className="flex w-full gap-x-2 gap-y-6 flex-wrap h-min mt-8 max-[425px]:justify-center">
               {query.isSuccess &&
