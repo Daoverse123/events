@@ -61,7 +61,7 @@ function Nav() {
       {!matches && <Search />}
       <picture className="flex items-center gap-16">
         <span className="flex gap-[60px] max-[1150px]:hidden">
-          {["home", "discover"].map((ele) => {
+          {["home", "discover", "Add Events"].map((ele) => {
             return (
               <p
                 onClick={() => {
@@ -190,7 +190,7 @@ const MMenu = ({ close }: { close: () => any }) => {
           </span>
         </span>
         <div className="flex flex-col ml-auto mt-16 gap-8">
-          {["home", "discover"].map((ele) => {
+          {["home", "discover", "add Events"].map((ele) => {
             return (
               <a
                 className="text-3xl capitalize cursor-pointer hover:text-blue-600 border-r-[3px] border-blue-600 px-4 h-16 flex items-center text-right"

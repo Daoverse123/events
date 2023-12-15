@@ -10,7 +10,7 @@ function Card4({
   place: string;
   count: any;
 }) {
-  console.log("c", count);
+  console.log("c", count); 
   return (
     <picture
       onClick={() => {

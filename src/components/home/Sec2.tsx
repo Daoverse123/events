@@ -42,6 +42,7 @@ function Sec2({ id }: { id?: string }) {
                   description={cd.description}
                   key={"scd" + idx}
                   startdate={cd.start_date}
+                  id={cd._id}
                 />
               );
             })

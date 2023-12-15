@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { DM_Serif_Display } from "next/font/google";
 
 const serif = DM_Serif_Display({
@@ -6,7 +6,38 @@ const serif = DM_Serif_Display({
   subsets: ["latin"],
 });
 
+let faqs = [
+  {
+    question: "What is Truts Events?",
+    answer:
+      "Truts Events is a dedicated aggregator platform that curates and lists upcoming events in the web3 scene. Our platform is tailored to provide comprehensive, up-to-date information about conferences, meetups, workshops, and other events related to the web3 ecosystem.",
+  },
+  {
+    question:
+      "How does Truts Events differ from other event listing platforms?",
+    answer:
+      "What sets Truts Events apart is our specialized focus on the web3 scene. Our platform is not just a listing site; it's a curated experience designed to connect enthusiasts, professionals, and newcomers with relevant, high-quality web3 events.",
+  },
+  {
+    question: "Can I list my web3 event on Truts Events?",
+    answer:
+      "Absolutely! If you're organizing an event related to blockchain, DeFi, NFTs, or any other web3 technology, we encourage you to list it on Truts Events. Please visit our 'Submit Event' page and fill out the necessary details. Our team will review your submission and get in touch if additional information is needed.",
+  },
+];
+
+type faqstate = {
+  [key: string]: boolean;
+};
+
 export const Faq = () => {
+  const [arr, setarr] = useState<faqstate>({
+    faq1: false,
+    faq2: false,
+    faq3: false,
+  });
+
+  console.log(arr);
+
   return (
     <section className="flex max-w-[1440px] mx-auto max-[1200px]:flex-col-reverse px-[120px] py-[78px] max-[1200px]:py-[49px] max-[1200px]:px-[29px] gap-[120px] max-[1200px]:gap-9">
       <p className="max-[1200px]:flex hidden  items-center text-[#3065F3] gap-2 border-b-2 border-[#3065F3] w-max">
@@ -15,34 +46,40 @@ export const Faq = () => {
           xmlns="http://www.w3.org/2000/svg"
           width="15"
           height="14"
-          viewBox="0 0 15 14"
           fill="none"
+          viewBox="0 0 15 14"
         >
           <path
-            fill-rule="evenodd"
-            clip-rule="evenodd"
-            d="M0 6.53216C0 6.28471 0.0982978 6.0474 0.273269 5.87243C0.44824 5.69746 0.685551 5.59916 0.932997 5.59916H11.7427L7.73641 1.59474C7.56122 1.41955 7.4628 1.18193 7.4628 0.934176C7.4628 0.686417 7.56122 0.448806 7.73641 0.273614C7.9116 0.098422 8.14921 0 8.39697 0C8.64473 0 8.88234 0.098422 9.05754 0.273614L14.6555 5.8716C14.7424 5.95826 14.8113 6.06122 14.8584 6.17457C14.9054 6.28792 14.9296 6.40944 14.9296 6.53216C14.9296 6.65488 14.9054 6.77639 14.8584 6.88974C14.8113 7.00309 14.7424 7.10605 14.6555 7.19272L9.05754 12.7907C8.88234 12.9659 8.64473 13.0643 8.39697 13.0643C8.14921 13.0643 7.9116 12.9659 7.73641 12.7907C7.56122 12.6155 7.4628 12.3779 7.4628 12.1301C7.4628 11.8824 7.56122 11.6448 7.73641 11.4696L11.7427 7.46516H0.932997C0.685551 7.46516 0.44824 7.36686 0.273269 7.19189C0.0982978 7.01692 0 6.7796 0 6.53216Z"
             fill="#3065F3"
-          />
+            fillRule="evenodd"
+            d="M0 6.532A.933.933 0 01.933 5.6h10.81L7.736 1.595A.934.934 0 019.058.274l5.598 5.598a.934.934 0 010 1.32l-5.598 5.599a.934.934 0 01-1.322-1.321l4.007-4.005H.933A.933.933 0 010 6.532z"
+            clipRule="evenodd"
+          ></path>
         </svg>
       </p>
       <div className="flex flex-col  border-t-[1px] border-[rgba(0, 0, 0, 0.20)]">
-        {[
-          "How do i sign up for the project?",
-          "What thing that i should prepare before starting?",
-          "Does my company need help for marketing advices?",
-        ].map((faq, key) => {
+        {faqs.map((faq, key) => {
           return (
-            <span className="flex flex-col" key={"faq" + key}>
-              <span className="flex w-[616px] max-[1200px]:w-full justify-between py-[32px] px-2 border-b-[1px] border-[rgba(0, 0, 0, 0.20)]">
-                <h1 className="text-[20px]">{faq}</h1>
+            <span
+              className="flex flex-col  border-b-[1px] border-[rgba(0, 0, 0, 0.20)] p-[37px]"
+              key={"faq" + key}
+              onClick={() => {
+                setarr((r) => {
+                  let kx = `faq${key}`;
+                  r[kx] = !r[kx];
+                  return { ...r };
+                });
+              }}
+            >
+              <span className="flex w-[616px] max-[1200px]:w-full justify-between  px-2">
+                <h1 className="text-[20px]">{faq.question}</h1>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
                   height="24"
                   fill="none"
                   viewBox="0 0 24 24"
-                  className="min-w-[24px]"
+                  className="min-w-[24px] cursor-pointer"
                 >
                   <path
                     fill="url(#paint0_linear_11445_35319)"
@@ -63,6 +100,11 @@ export const Faq = () => {
                   </defs>
                 </svg>
               </span>
+              {arr[`faq${key}`] && (
+                <span className="w-[92%] mb-4 ml-2 text-gray-500 pt-4">
+                  {faq.answer}
+                </span>
+              )}
             </span>
           );
         })}
@@ -103,15 +145,15 @@ export const Faq = () => {
             xmlns="http://www.w3.org/2000/svg"
             width="15"
             height="14"
-            viewBox="0 0 15 14"
             fill="none"
+            viewBox="0 0 15 14"
           >
             <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M0 6.53216C0 6.28471 0.0982978 6.0474 0.273269 5.87243C0.44824 5.69746 0.685551 5.59916 0.932997 5.59916H11.7427L7.73641 1.59474C7.56122 1.41955 7.4628 1.18193 7.4628 0.934176C7.4628 0.686417 7.56122 0.448806 7.73641 0.273614C7.9116 0.098422 8.14921 0 8.39697 0C8.64473 0 8.88234 0.098422 9.05754 0.273614L14.6555 5.8716C14.7424 5.95826 14.8113 6.06122 14.8584 6.17457C14.9054 6.28792 14.9296 6.40944 14.9296 6.53216C14.9296 6.65488 14.9054 6.77639 14.8584 6.88974C14.8113 7.00309 14.7424 7.10605 14.6555 7.19272L9.05754 12.7907C8.88234 12.9659 8.64473 13.0643 8.39697 13.0643C8.14921 13.0643 7.9116 12.9659 7.73641 12.7907C7.56122 12.6155 7.4628 12.3779 7.4628 12.1301C7.4628 11.8824 7.56122 11.6448 7.73641 11.4696L11.7427 7.46516H0.932997C0.685551 7.46516 0.44824 7.36686 0.273269 7.19189C0.0982978 7.01692 0 6.7796 0 6.53216Z"
               fill="#3065F3"
-            />
+              fillRule="evenodd"
+              d="M0 6.532A.933.933 0 01.933 5.6h10.81L7.736 1.595A.934.934 0 019.058.274l5.598 5.598a.934.934 0 010 1.32l-5.598 5.599a.934.934 0 01-1.322-1.321l4.007-4.005H.933A.933.933 0 010 6.532z"
+              clipRule="evenodd"
+            ></path>
           </svg>
         </p>
       </div>

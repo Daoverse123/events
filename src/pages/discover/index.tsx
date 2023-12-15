@@ -23,12 +23,12 @@ import { create } from "zustand";
 import { json } from "stream/consumers";
 import { useMediaQuery } from "usehooks-ts";
 
-type Label = "city" | "country" | "category";
+type Label = "city" | "country" | "tag";
 
 type FilterObj = {
   city: string[];
   country: string[];
-  category: string[];
+  tag: string[];
 };
 interface SortState {
   filters: FilterObj;
@@ -41,7 +41,7 @@ const useFilterStore = create<SortState>()((set) => ({
   filters: {
     city: [],
     country: [],
-    category: [],
+    tag: [],
   },
   add: (label: Label, item: string) => {
     return set((st) => {
@@ -65,15 +65,15 @@ const useFilterStore = create<SortState>()((set) => ({
 
 const generateFilters = (filKeys: FilterObj) => {
   if (
-    filKeys.category.length == 0 &&
+    filKeys.tag.length == 0 &&
     filKeys.city.length == 0 &&
     filKeys.country.length == 0
   ) {
     return "";
   } else {
     let updateObj = {};
-    if (filKeys.category.length != 0) {
-      updateObj = { ...updateObj, category: filKeys.category };
+    if (filKeys.tag.length != 0) {
+      updateObj = { ...updateObj, category: filKeys.tag };
     }
     if (filKeys.city.length != 0) {
       updateObj = { ...updateObj, city: filKeys.city };
@@ -138,7 +138,7 @@ function DiscoverPage() {
               setter={() => {}}
             /> */}
           </div>
-          <div className="flex w-full gap-x-2 gap-y-6 flex-wrap h-min mt-8">
+          <div className="flex w-full gap-x-2 gap-y-6 flex-wrap h-min mt-8 max-[425px]:justify-center">
             {query.isSuccess &&
               query.data.map((cd, idx) => {
                 return (
@@ -271,10 +271,10 @@ const FilterSection = () => {
     return res.data.data.result as CountryCount[];
   });
 
-  // const categories = useQuery("category", async () => {
-  //   let res = await axios.get(`${process.env.API}/truts-event/tags`);
-  //   return res.data.data.result as CategoryCount[];
-  // });
+  const categories = useQuery("category", async () => {
+    let res = await axios.get(`${process.env.API}/truts-event/tags`);
+    return res.data.data.result as CategoryCount[];
+  });
   return (
     <>
       {city.isSuccess && (
@@ -290,6 +290,14 @@ const FilterSection = () => {
           name="country"
           list={country.data.map((ele) => {
             return { tag: ele.country, count: ele.count };
+          })}
+        />
+      )}
+      {categories.isSuccess && (
+        <FilterGroup
+          name="tag"
+          list={categories.data.map((ele) => {
+            return { tag: ele.tag, count: ele.count };
           })}
         />
       )}
@@ -354,7 +362,7 @@ const FilterGroup = ({
   return (
     <div className="flex flex-col w-full border rounded-md">
       <h1 className="p-[18px] bg-[#E0E0E0] flex justify-between w-full h-[57px] text-[16px] capitalize">
-        {name}
+        {name == "tag" ? "Category" : name}
         <p
           onClick={() => {
             reset(name as Label);
