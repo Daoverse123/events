@@ -44,7 +44,7 @@ export const Faq = () => {
         {faqs.map((faq, key) => {
           return (
             <span
-              className="flex flex-col  border-b-[1px] border-[rgba(0, 0, 0, 0.20)] p-[37px] max-[425px]:px-0"
+              className="flex flex-col max-w-[650px] border-b-[1px] border-[rgba(0, 0, 0, 0.20)] p-[37px] max-[425px]:px-0"
               key={"faq" + key}
               onClick={() => {
                 setarr((r) => {
