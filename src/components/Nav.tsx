@@ -119,7 +119,7 @@ function Search() {
       <span className=" max-w-[458px] w-full gap-[8px] h-[38px] px-[16px] rounded-[12px] border flex items-center">
         <SearchIcon />
         <input
-          className="flex flex-1 text-[12px] h-full"
+          className="flex flex-1 text-[16px] h-full focus:outline-none"
           placeholder="Search by Event names"
           type="text"
           name=""
@@ -144,12 +144,12 @@ function Search() {
       </span>
 
       {results.length > 0 && visible && (
-        <div className="flex flex-col bg-white w-full absolute mt-[38px] shadow-2xl h-fit rounded-lg overflow-hidden">
+        <div className="flex flex-col bg-white w-full ml-a  absolute mt-[38px] shadow-2xl h-fit rounded-lg overflow-hidden">
           {results.map((st) => {
             return (
               <span
                 key={st._id}
-                className="flex w-full h-10 border-b  items-center px-3 cursor-pointer text-black"
+                className="flex w-full h-10 border-b text-sm  items-center px-3 cursor-pointer text-black pl-11"
                 onClick={() => {
                   window.open(`/event/${st._id}`, "_blank");
                 }}
