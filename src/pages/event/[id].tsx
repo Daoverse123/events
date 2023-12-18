@@ -5,6 +5,7 @@ import Head from "next/head";
 import Overview from "@/components/event/Overview";
 import SideEvents from "@/components/event/SideEvents";
 import Offer from "@/components/event/Offer";
+import Missions from "@/components/event/Missions";
 
 import { DM_Serif_Display } from "next/font/google";
 
@@ -47,7 +48,7 @@ function EventPage() {
           />
         </picture>
         <span className="flex w-[1300px] mx-auto gap-[14px] mt-2 border-b max-[1150px]:w-full">
-          {["Overview"].map((ele, idx) => {
+          {["Overview", "Missions"].map((ele, idx) => {
             return (
               <p
                 onClick={() => {
@@ -69,6 +70,7 @@ function EventPage() {
             {"Overview" == selected && (
               <Overview data={eventData.data as Event} />
             )}
+            {"Missions" == selected && <Missions />}
             {/* {"Side Events" == selected && <SideEvents />}
         {"Offers" == selected && <Offer />} */}
           </div>
