@@ -6,7 +6,10 @@ function MissionCard() {
   return (
     <div
       onClick={() => {
-        const newTab = window.open("https://token2049.truts.xyz", "_blank");
+        const newTab = window.open(
+          "https://truts.xyz/mission/63f288c41b56b4bc49e55b9d",
+          "_blank"
+        );
         newTab?.focus(); // Optional: Set focus on the new tab
       }}
       className=" text-white flex flex-col w-[313px] max-[425px]:w-[95%] h-[274px] rounded-2xl border border-[#CACDD5] cursor-pointer"
@@ -14,19 +17,21 @@ function MissionCard() {
       <div className="p-4">
         <picture>
           <img
-            className="w-[59px] h-[59px] object-cover rounded-full"
-            src={"/pb.png"}
+            className="w-[59px] h-[59px] object-cover rounded-full border"
+            src={
+              "https://truts-listings.s3.ap-south-1.amazonaws.com/truts-logo.webp"
+            }
             alt=""
           />
         </picture>
         <span>
-          <p className="text-xs m-0 mt-2 text-black">Token2049</p>
+          <p className="text-xs m-0 mt-2 text-black">Truts</p>
           <h3 className="text-lg m-0 mt-1 gradText font-semibold text-black">
-            Review speaker sessions
+            Start with Truts
           </h3>
           <p className="text-sm font-normal m-0 mt-1 mb-2 text-black">
             {limitTextWords(
-              "Get rewarded with truts XPs for reviewing the session.",
+              "Become part of truts discord family & share your experience on truts",
               12
             )}
           </p>
@@ -38,7 +43,7 @@ function MissionCard() {
       <span className="p-4 flex items-center w-full border-t border-t-[#EEEFF2] mt-auto">
         <Coin />
         <p className="text-base ml-2 gradText font-semibold text-black">
-          {10000} XP
+          {1500} XP
         </p>
       </span>
     </div>
