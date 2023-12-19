@@ -69,7 +69,7 @@ function Nav() {
                     ele == "Add Events" ? "add-events" : ele
                   }`;
                 }}
-                className="text-[14px] text-[#8C93A3] capitalize cursor-pointer"
+                className="text-[14px] text-[#000000] capitalize cursor-pointer"
                 key={ele}
               >
                 {ele}
@@ -144,12 +144,12 @@ function Search() {
       </span>
 
       {results.length > 0 && visible && (
-        <div className="flex flex-col bg-white w-full ml-a  absolute mt-[38px] shadow-2xl h-fit rounded-lg overflow-hidden">
+        <div className="flex flex-col bg-white w-full ml-a  absolute mt-[38px] shadow-2xl h-fit rounded-lg overflow-hidden z-50">
           {results.map((st) => {
             return (
               <span
                 key={st._id}
-                className="flex w-full h-10 border-b text-sm  items-center px-3 cursor-pointer text-black pl-11"
+                className="flex w-full h-10 border-b text-sm  items-center px-3 cursor-pointer text-black pl-11 "
                 onClick={() => {
                   window.open(`/event/${st._id}`, "_blank");
                 }}
