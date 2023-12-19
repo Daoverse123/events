@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Head from "next/head";
 
 //components
@@ -23,6 +23,16 @@ import { Event } from "@/types";
 import Footer from "@/components/Footer";
 
 function EventPage() {
+  const [trutsday, settrutsday] = useState(false);
+  useEffect(() => {
+    let id =
+      location.pathname.split("/")[location.pathname.split("/").length - 1];
+    if (id == "65817384054181b01e293809") {
+      settrutsday(true);
+    }
+    debugger;
+  }, []);
+
   const [selected, setselected] = useState("Overview");
 
   let eventData = useQuery("event-data", async () => {
@@ -48,22 +58,24 @@ function EventPage() {
           />
         </picture>
         <span className="flex w-[1300px] mx-auto gap-[14px] mt-2 border-b max-[1150px]:w-full">
-          {["Overview", "Missions"].map((ele, idx) => {
-            return (
-              <p
-                onClick={() => {
-                  setselected(ele);
-                }}
-                style={{
-                  borderColor: `${ele == selected ? "#2F80ED" : "#ffff"}`,
-                }}
-                className={`cursor-pointer px-[10px] text-[16px] border-b-[3px]  pb-[10px]`}
-                key={idx + ele}
-              >
-                {ele}
-              </p>
-            );
-          })}
+          {(trutsday ? ["Overview", "Missions"] : ["Overview"]).map(
+            (ele, idx) => {
+              return (
+                <p
+                  onClick={() => {
+                    setselected(ele);
+                  }}
+                  style={{
+                    borderColor: `${ele == selected ? "#2F80ED" : "#ffff"}`,
+                  }}
+                  className={`cursor-pointer px-[10px] text-[16px] border-b-[3px]  pb-[10px]`}
+                  key={idx + ele}
+                >
+                  {ele}
+                </p>
+              );
+            }
+          )}
         </span>
         {eventData.isSuccess && (
           <div className="flex min-h-screen">
