@@ -86,8 +86,7 @@ const useFilterStore = create<SortState>()((set) => ({
 }));
 
 const generateFilters = (filKeys: FilterObj, daterange_init: DateRange) => {
-  let dateRange: any = {};
-  // end_date: { gte: new Date().toISOString() },
+  let dateRange: any = { end_date: { gte: new Date().toISOString() } };
 
   if (daterange_init.start.length > 0) {
     dateRange = {
@@ -111,7 +110,7 @@ const generateFilters = (filKeys: FilterObj, daterange_init: DateRange) => {
   } else {
     let updateObj = {};
     if (filKeys.tag.length != 0) {
-      updateObj = { ...updateObj, category: filKeys.tag };
+      updateObj = { ...updateObj, tags: filKeys.tag };
     }
     if (filKeys.city.length != 0) {
       updateObj = { ...updateObj, city: filKeys.city };
@@ -300,21 +299,42 @@ const MobileFilter = ({ close }: { close: () => void }) => {
   );
 };
 
+const urlGen = (endpoint: string, daterange: DateRange) => {
+  let baseurl = `${process.env.API}/truts-event/${endpoint}`;
+
+  if (daterange.start.length > 0 && daterange.end.length > 0) {
+    return (baseurl = `${baseurl}?start_date=${daterange.start}&end_date=${daterange.end}`);
+  }
+  if (daterange.start.length > 0) {
+    return (baseurl = `${baseurl}?start_date=${daterange.start}`);
+  }
+  if (daterange.end.length > 0) {
+    return (baseurl = `${baseurl}?end_date=${daterange.end}`);
+  }
+
+  return baseurl;
+};
+
 const FilterSection = () => {
-  const city = useQuery("city", async () => {
-    let res = await axios.get(`${process.env.API}/truts-event/cities`);
+  let { daterange } = useFilterStore();
+
+  const city = useQuery(["city", daterange as DateRange], async (qn) => {
+    let res = await axios.get(urlGen("cities", qn.queryKey[1] as DateRange));
     return res.data.data.result as CityCount[];
   });
 
-  const country = useQuery("country", async () => {
-    let res = await axios.get(`${process.env.API}/truts-event/countries`);
+  const country = useQuery(["country", daterange as DateRange], async () => {
+    let res = await axios.get(urlGen("countries", daterange as DateRange));
     return res.data.data.result as CountryCount[];
   });
 
-  const categories = useQuery("category", async () => {
-    let res = await axios.get(`${process.env.API}/truts-event/tags`);
-    return res.data.data.result as CategoryCount[];
-  });
+  const categories = useQuery(
+    ["category", daterange as DateRange],
+    async () => {
+      let res = await axios.get(urlGen("tags", daterange as DateRange));
+      return res.data.data.result as CategoryCount[];
+    }
+  );
 
   return (
     <>
@@ -358,7 +378,7 @@ const DateRange = () => {
           onClick={() => {
             resetrange();
           }}
-          className="text-red-500 cursor-pointer"
+          className="text-gray-500 cursor-pointer ml-auto  hover:text-red-500 text-sm"
         >
           Reset
         </p>
@@ -433,6 +453,8 @@ const FilterGroup = ({
   let { add, remove, reset } = useFilterStore();
   const [state, setstate] = useState(genList());
 
+  const [dropDownVisible, setdropDownVisible] = useState(false);
+
   useEffect(() => {
     let params = location.search;
     if (params && name == "city") {
@@ -447,54 +469,69 @@ const FilterGroup = ({
 
   return (
     <div className="flex flex-col w-full border rounded-md">
-      <h1 className="p-[18px] bg-[#E0E0E0] flex justify-between w-full h-[57px] text-[16px] capitalize">
+      <h1
+        className="p-[18px] bg-[#E0E0E0] flex  w-full h-[57px] text-[16px] capitalize items-center"
+        onClick={() => {
+          setdropDownVisible(!dropDownVisible);
+        }}
+      >
         {name == "tag" ? "Category" : name}
         <p
-          onClick={() => {
+          onClick={(e) => {
             reset(name as Label);
             setstate(genList());
+            e.stopPropagation();
           }}
-          className="text-red-500 cursor-pointer"
+          className="text-gray-500 cursor-pointer ml-auto mr-4 hover:text-red-500 text-sm"
         >
           Reset
         </p>
+        <Arrow
+          onClick={() => {
+            setdropDownVisible(!dropDownVisible);
+          }}
+          cn={`transform ${dropDownVisible ? "rotate-180" : ""}`}
+        />
       </h1>
-      <div className="flex px-[18px] py-[16px] flex-col gap-[14px]">
-        {list
-          .filter((ele) => {
-            return ele.tag;
-          })
-          .map((ele, idx) => {
-            return (
-              <span key={idx} className="flex justify-between w-full">
-                <p className="text-[14px] flex gap-2 items-center">
-                  <input
-                    className="w-[20px] h-[20px] rounded-2xl cursor-pointer"
-                    type="checkbox"
-                    checked={state[ele.tag]}
-                    onChange={(e) => {
-                      if (e.target.checked) {
-                        setstate((s) => {
-                          s[ele.tag] = true;
-                          return { ...s };
-                        });
-                        add(name as Label, ele.tag);
-                      } else {
-                        setstate((s) => {
-                          s[ele.tag] = false;
-                          return { ...s };
-                        });
-                        remove(name as Label, ele.tag);
-                      }
-                    }}
-                  />
-                  {limitWords(ele.tag, 30)}
-                </p>
-                <p className="text-[#333]">{ele.count}</p>
-              </span>
-            );
-          })}
-      </div>
+      {dropDownVisible && (
+        <div className="flex px-[18px] py-[16px] flex-col gap-[14px]">
+          {list
+            .filter((ele) => {
+              return ele.tag;
+            })
+            .map((ele, idx) => {
+              return (
+                <span key={idx} className="flex justify-between w-full">
+                  <p className="text-[14px] flex gap-2 items-center">
+                    <input
+                      className="w-[20px] h-[20px] rounded-2xl cursor-pointer"
+                      type="checkbox"
+                      checked={state[ele.tag]}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setstate((s) => {
+                            s[ele.tag] = true;
+                            return { ...s };
+                          });
+
+                          add(name as Label, ele.tag);
+                        } else {
+                          setstate((s) => {
+                            s[ele.tag] = false;
+                            return { ...s };
+                          });
+                          remove(name as Label, ele.tag);
+                        }
+                      }}
+                    />
+                    {limitWords(ele.tag, 30)}
+                  </p>
+                  <p className="text-[#333]">{ele.count}</p>
+                </span>
+              );
+            })}
+        </div>
+      )}
     </div>
   );
 };
@@ -519,6 +556,23 @@ function Filtericon({ cn, onClick }: { cn?: string; onClick?: () => any }) {
         strokeWidth="2"
         d="M14 16h13.5M4 16h3.5M13.5 16a2.5 2.5 0 10-5 0 2.5 2.5 0 005 0zM24 7h3.5M4 7h13.5M23.5 7a2.5 2.5 0 10-5 0 2.5 2.5 0 005 0zM20 25h7.5M4 25h9.5M19.5 25a2.5 2.5 0 10-5 0 2.5 2.5 0 005 0z"
       ></path>
+    </svg>
+  );
+}
+
+function Arrow({ cn, onClick }: { cn?: string; onClick?: () => any }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="14"
+      height="16"
+      viewBox="0 0 448 512"
+      className={`${cn} cursor-pointer`}
+      onClick={() => {
+        onClick!();
+      }}
+    >
+      <path d="M201.4 342.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 274.7 86.6 137.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"></path>
     </svg>
   );
 }
