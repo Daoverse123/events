@@ -1,4 +1,5 @@
 import { DM_Serif_Display } from "next/font/google";
+import { SocialIcon } from "react-social-icons";
 
 const serif = DM_Serif_Display({
   weight: ["400"],
@@ -22,6 +23,16 @@ function Overview({ data }: { data: Event }) {
           <span className="flex items-center text-[18px] gap-2 underline max-[1150px]:text-[14px]">
             <Pin />
             {data.location}
+          </span>
+          <span className="flex mt-4">
+            {data?.socials?.map((social) => (
+              <SocialIcon
+                network={social.link.includes("t.me") ? "telegram" : ""}
+                url={social.link}
+                key={social._id}
+                className="scale-[70%]"
+              />
+            ))}
           </span>
         </span>
         {/* <button className="mt-14 ml-auto flex justify-center px-11 h-[42px] items-center gap-2 outline rounded-lg ">

@@ -30,7 +30,6 @@ function EventPage() {
     if (id == "65817384054181b01e293809") {
       settrutsday(true);
     }
-    debugger;
   }, []);
 
   const [selected, setselected] = useState("Overview");
