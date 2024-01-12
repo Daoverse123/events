@@ -30,7 +30,7 @@ function Overview({ data }: { data: Event }) {
                 network={social.link.includes("t.me") ? "telegram" : ""}
                 url={social.link}
                 key={social._id}
-                className="scale-[70%]"
+                className="scale-[70%] grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all"
               />
             ))}
           </span>
