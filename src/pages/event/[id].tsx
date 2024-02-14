@@ -23,12 +23,15 @@ import { Event } from "@/types";
 import Footer from "@/components/Footer";
 
 function EventPage() {
-  const [trutsday, settrutsday] = useState(false);
+  const [missionType, setMissionType] = useState("");
   useEffect(() => {
     let id =
       location.pathname.split("/")[location.pathname.split("/").length - 1];
     if (id == "65817384054181b01e293809") {
-      settrutsday(true);
+      setMissionType("trutsday");
+    }
+    if (id == "65ade35084375ce9a77ef2bb") {
+      setMissionType("teamz");
     }
   }, []);
 
@@ -57,7 +60,7 @@ function EventPage() {
           />
         </picture>
         <span className="flex w-[1300px] mx-auto gap-[14px] mt-2 border-b max-[1150px]:w-full">
-          {(trutsday ? ["Overview", "Missions"] : ["Overview"]).map(
+          {(missionType !== "" ? ["Overview", "Missions"] : ["Overview"]).map(
             (ele, idx) => {
               return (
                 <p
@@ -81,7 +84,7 @@ function EventPage() {
             {"Overview" == selected && (
               <Overview data={eventData.data as Event} />
             )}
-            {"Missions" == selected && <Missions />}
+            {"Missions" == selected && <Missions missionType={missionType} />}
             {/* {"Side Events" == selected && <SideEvents />}
         {"Offers" == selected && <Offer />} */}
           </div>
